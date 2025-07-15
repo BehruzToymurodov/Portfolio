@@ -1,0 +1,56 @@
+.themeToggle {
+	position: relative;
+	padding: var(--space-2);
+	border-radius: var(--radius-full);
+	background-color: var(--bg-tertiary);
+	border: 1px solid var(--border-primary);
+	cursor: pointer;
+	transition: all var(--transition);
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	width: 44px;
+	height: 44px;
+}
+
+.themeToggle:hover {
+	background-color: var(--bg-secondary);
+	border-color: var(--border-secondary);
+	transform: scale(1.05);
+}
+
+.themeToggle:focus {
+	outline: 2px solid var(--border-focus);
+	outline-offset: 2px;
+}
+
+.iconWrapper {
+	position: relative;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	transition: transform var(--transition);
+}
+
+.themeToggle:hover .iconWrapper {
+	transform: rotate(15deg);
+}
+
+.icon {
+	width: 20px;
+	height: 20px;
+	color: var(--text-secondary);
+	transition: color var(--transition);
+}
+
+.dark .icon {
+	color: var(--yellow-500);
+}
+
+.themeToggle:hover .icon {
+	color: var(--text-primary);
+}
+
+.dark .themeToggle:hover .icon {
+	color: var(--yellow-400);
+}
