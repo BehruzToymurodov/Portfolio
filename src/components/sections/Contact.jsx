@@ -56,14 +56,14 @@ const Contact = () => {
 		{
 			icon: Mail,
 			label: 'Email',
-			value: 'behruz@email.com',
-			href: 'mailto:behruz@email.com',
+			value: 'tuymuradov.bekhruzz@gmail.com',
+			href: 'mailto:tuymuradov.bekhruzz@gmail.com',
 		},
 		{
 			icon: Phone,
 			label: 'Telefon',
-			value: '+998 90 123 45 67',
-			href: 'tel:+998901234567',
+			value: '+998 91 887 06 77',
+			href: 'tel:+998918870677',
 		},
 		{
 			icon: MapPin,
@@ -77,38 +77,22 @@ const Contact = () => {
 		{
 			icon: Github,
 			label: 'GitHub',
-			href: 'https://github.com/behruz',
+			href: 'https://github.com/BehruzToymurodov',
 		},
 		{
 			icon: Linkedin,
 			label: 'LinkedIn',
-			href: 'https://linkedin.com/in/behruz',
+			href: 'https://linkedin.com/in/bekhruz-tuymuradov',
 		},
 		{
 			icon: MessageCircle,
 			label: 'Telegram',
-			href: 'https://t.me/behruz',
+			href: 'https://t.me/Bekhruz_Tuymuradov',
 		},
 	]
 
 	return (
 		<section id='contact' className={styles.contact}>
-			{/* Background Effects */}
-			<div className={styles.contactBackground}>
-				<div className={styles.backgroundGrid}></div>
-				<div className={styles.glowOrbs}>
-					<div className={`${styles.glowOrb} ${styles.orb1}`}></div>
-					<div className={`${styles.glowOrb} ${styles.orb2}`}></div>
-				</div>
-			</div>
-
-			{/* Floating Elements */}
-			<div className={styles.floatingElements}>
-				<div className={`${styles.floatingShape} ${styles.shape1}`}></div>
-				<div className={`${styles.floatingShape} ${styles.shape2}`}></div>
-				<div className={`${styles.floatingShape} ${styles.shape3}`}></div>
-			</div>
-
 			<div className={styles.container}>
 				{/* Section Header */}
 				<div className={styles.sectionHeader}>
