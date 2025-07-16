@@ -1,12 +1,14 @@
-import { Menu, X } from 'lucide-react'
+import { Menu, Moon, Sun, X } from 'lucide-react'
 import { useState } from 'react'
+import logo from '../../assets/logo.png'
 import { useActiveSection } from '../../hooks/useActiveSection'
+import { useTheme } from '../../hooks/useTheme'
 import { scrollToSection } from '../../utils/scrollUtils'
 import styles from './Header.module.css'
-import ThemeToggle from './ThemeToggle'
 
 const Header = () => {
 	const activeSection = useActiveSection()
+	const { theme, toggleTheme } = useTheme()
 	const [isMenuOpen, setIsMenuOpen] = useState(false)
 
 	const navigationItems = [
@@ -28,21 +30,21 @@ const Header = () => {
 	}
 
 	return (
-		<nav className={styles.nav}>
+		<header className={styles.header}>
 			<div className='container'>
-				<div className={styles.navContainer}>
+				<div className={styles.headerContent}>
 					{/* Logo */}
 					<div className={styles.logo}>
 						<button
 							onClick={() => handleNavClick('home')}
 							className={styles.logoButton}
 						>
-							Behruz T.
+							<img src={logo} alt='' />
 						</button>
 					</div>
 
 					{/* Desktop Navigation */}
-					<div className={styles.desktopNav}>
+					<nav className={styles.desktopNav}>
 						{navigationItems.map(item => (
 							<button
 								key={item.id}
@@ -54,12 +56,24 @@ const Header = () => {
 								{item.label}
 							</button>
 						))}
-					</div>
+					</nav>
 
 					{/* Controls */}
-					<div className={styles.controls}>
-						<ThemeToggle />
+					<div className={styles.headerControls}>
+						{/* Theme Toggle */}
+						<button
+							onClick={toggleTheme}
+							className={styles.themeToggle}
+							aria-label={theme === 'dark' ? 'Light mode' : 'Dark mode'}
+						>
+							{theme === 'dark' ? (
+								<Sun className={styles.themeIcon} />
+							) : (
+								<Moon className={styles.themeIcon} />
+							)}
+						</button>
 
+						{/* Mobile Menu Button */}
 						<button
 							onClick={toggleMenu}
 							className={styles.mobileMenuButton}
@@ -80,7 +94,7 @@ const Header = () => {
 						isMenuOpen ? styles.mobileNavOpen : ''
 					}`}
 				>
-					<div className={styles.mobileNavContent}>
+					<nav className={styles.mobileNavContent}>
 						{navigationItems.map(item => (
 							<button
 								key={item.id}
@@ -92,10 +106,10 @@ const Header = () => {
 								{item.label}
 							</button>
 						))}
-					</div>
+					</nav>
 				</div>
 			</div>
-		</nav>
+		</header>
 	)
 }
 

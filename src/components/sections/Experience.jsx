@@ -1,48 +1,19 @@
-import { Briefcase, Calendar, GraduationCap, MapPin, Users } from 'lucide-react'
-import { useEffect, useRef, useState } from 'react'
+// Experience.jsx - To'g'irlangan Navigation
+import {
+	Briefcase,
+	Calendar,
+	ChevronLeft,
+	ChevronRight,
+	GraduationCap,
+	MapPin,
+	Users,
+} from 'lucide-react'
+import { useState } from 'react'
 import { experiences } from '../../data/experience'
 import styles from './Experience.module.css'
 
 const Experience = () => {
-	const [scrollProgress, setScrollProgress] = useState(0)
-	const sectionRef = useRef(null)
-	const stackRef = useRef(null)
-
-	useEffect(() => {
-		const handleScroll = () => {
-			if (!sectionRef.current || !stackRef.current) return
-
-			const sectionRect = sectionRef.current.getBoundingClientRect()
-			const sectionHeight = sectionRef.current.offsetHeight
-			const windowHeight = window.innerHeight
-
-			// Section ko'rinadigan qismi
-			const sectionTop = sectionRect.top
-			const sectionBottom = sectionRect.bottom
-
-			// Agar section ko'rinmasa
-			if (sectionBottom < 0 || sectionTop > windowHeight) {
-				setScrollProgress(sectionTop > windowHeight ? 0 : 100)
-				return
-			}
-
-			// Section ichidagi scroll progress
-			const scrollStart = sectionTop
-			const scrollRange = sectionHeight - windowHeight
-			const currentScroll = -scrollStart
-
-			const progress = Math.max(
-				0,
-				Math.min(100, (currentScroll / scrollRange) * 100)
-			)
-			setScrollProgress(progress)
-		}
-
-		window.addEventListener('scroll', handleScroll)
-		handleScroll() // Initial call
-
-		return () => window.removeEventListener('scroll', handleScroll)
-	}, [])
+	const [activeCard, setActiveCard] = useState(0)
 
 	const getTypeIcon = type => {
 		switch (type) {
@@ -57,155 +28,154 @@ const Experience = () => {
 		}
 	}
 
-	const getTypeColor = type => {
+	const getTypeClass = type => {
 		switch (type) {
 			case 'full-time':
-				return 'blue'
+				return styles.iconWork
 			case 'freelance':
-				return 'green'
+				return styles.iconFreelance
 			case 'education':
-				return 'purple'
+				return styles.iconEducation
 			default:
-				return 'blue'
+				return styles.iconWork
 		}
 	}
 
-	const getCardTransform = index => {
-		const totalCards = experiences.length
-		const cardProgress = Math.max(
-			0,
-			Math.min(100, (scrollProgress - index * 20) / 20)
-		)
+	const nextCard = () => {
+		setActiveCard(prev => (prev < experiences.length - 1 ? prev + 1 : prev))
+	}
 
-		// Dastlabki pozitsiya - barcha kartalar ustma-ust
-		const initialY = index * 8 // Har bir karta 8px pastda
-		const initialScale = 1 - index * 0.02 // Har birisi ozgina kichikroq
-		const initialRotate = index * 1 // Ozgina burilish
+	const prevCard = () => {
+		setActiveCard(prev => (prev > 0 ? prev - 1 : prev))
+	}
 
-		// Animatsiya davomida harakat
-		const moveY = -(cardProgress * 120) // Yuqoriga harakat
-		const scaleChange = cardProgress * 0.02 // Scale kattalashtirish
-		const rotateChange = -(cardProgress * index * 1) // Burilishni kamaytirish
+	const goToCard = index => {
+		setActiveCard(index)
+	}
 
-		return {
-			transform: `
-        translateY(${initialY + moveY}px) 
-        scale(${initialScale + scaleChange}) 
-        rotate(${initialRotate + rotateChange}deg)
-      `,
-			zIndex: totalCards - index + Math.floor(cardProgress / 20),
-			opacity: Math.max(0.3, 1 - index * 0.1 + cardProgress * 0.01),
+	const getCardClassName = index => {
+		if (index === activeCard) {
+			return `${styles.cardWrapper} ${styles[`cardActive${index + 1}`]}`
 		}
+		return styles.cardWrapper
 	}
 
 	return (
-		<section
-			id='experience'
-			ref={sectionRef}
-			className={`${styles.experience}`}
-		>
-			<div className='container'>
+		<section id='experience' className={styles.experience}>
+			<div className={styles.container}>
 				{/* Section Header */}
 				<div className={styles.sectionHeader}>
-					<h2 className={styles.sectionTitle}>Ish Tajribasi</h2>
+					<h2 className={styles.sectionTitle}>
+						<span className={styles.titleGradient}>Ish Tajribasi</span>
+					</h2>
 					<div className={styles.sectionDivider}></div>
 					<p className={styles.sectionDescription}>
 						Mening professional rivojlanish yo'li va har bir bosqichda erishgan
-						natijalarim
+						natijalarim. Tugmalar orqali boshqa ishlarimni ko'ring.
 					</p>
 				</div>
 
-				{/* Card Stack Container */}
-				<div className={styles.stackContainer}>
-					<div ref={stackRef} className={styles.cardStack}>
-						{experiences.map((experience, index) => {
-							const TypeIcon = getTypeIcon(experience.type)
-							const typeColor = getTypeColor(experience.type)
-							const cardStyle = getCardTransform(index)
+				{/* Cards Container - Fixed Height */}
+				<div className={styles.cardsContainer}>
+					{experiences.map((experience, index) => {
+						const TypeIcon = getTypeIcon(experience.type)
+						const typeClass = getTypeClass(experience.type)
 
-							return (
-								<div
-									key={experience.id}
-									className={styles.experienceCard}
-									style={cardStyle}
-								>
-									<div className={styles.cardContent}>
-										{/* Card Header */}
-										<div className={styles.cardHeader}>
-											<div className={styles.cardHeaderLeft}>
-												<div
-													className={`${styles.typeIcon} ${
-														styles[`icon${typeColor}`]
-													}`}
-												>
-													<TypeIcon className={styles.icon} />
-												</div>
-												<div className={styles.titleWrapper}>
-													<h3 className={styles.role}>{experience.role}</h3>
-													<p className={styles.company}>{experience.company}</p>
-												</div>
-											</div>
-
-											<div className={styles.cardHeaderRight}>
-												{experience.current && (
-													<span className={styles.currentBadge}>Hozirda</span>
-												)}
-												<div className={styles.meta}>
-													<div className={styles.metaItem}>
-														<Calendar className={styles.metaIcon} />
-														<span>{experience.period}</span>
-													</div>
-													{experience.location && (
-														<div className={styles.metaItem}>
-															<MapPin className={styles.metaIcon} />
-															<span>{experience.location}</span>
-														</div>
-													)}
-												</div>
-											</div>
+						return (
+							<div
+								key={experience.id}
+								className={getCardClassName(index)}
+								onClick={() => goToCard(index)}
+							>
+								<div className={styles.cardContent}>
+									{/* Card Header */}
+									<div className={styles.cardHeader}>
+										<div className={`${styles.typeIcon} ${typeClass}`}>
+											<TypeIcon />
 										</div>
+										<div className={styles.cardInfo}>
+											<h3 className={styles.role}>{experience.role}</h3>
+											<p className={styles.company}>{experience.company}</p>
 
-										{/* Description */}
-										<p className={styles.description}>
-											{experience.description}
-										</p>
-
-										{/* Technologies */}
-										{experience.technologies && (
-											<div className={styles.technologies}>
-												{experience.technologies.map((tech, techIndex) => (
-													<span key={techIndex} className={styles.techBadge}>
-														{tech}
-													</span>
-												))}
-											</div>
-										)}
-
-										{/* Card Footer */}
-										<div className={styles.cardFooter}>
-											<div className={styles.cardNumber}>
-												{String(index + 1).padStart(2, '0')}
-											</div>
-											<div className={styles.experienceIcon}>
-												{experience.icon}
+											<div className={styles.meta}>
+												<div className={styles.metaItem}>
+													<Calendar />
+													<span>{experience.period}</span>
+												</div>
+												{experience.location && (
+													<div className={styles.metaItem}>
+														<MapPin />
+														<span>{experience.location}</span>
+													</div>
+												)}
+												{experience.current && (
+													<div className={styles.currentBadge}>Hozirda</div>
+												)}
 											</div>
 										</div>
 									</div>
 
-									{/* Card Shadow */}
-									<div className={styles.cardShadow}></div>
+									{/* Description */}
+									<p className={styles.description}>{experience.description}</p>
+
+									{/* Technologies */}
+									{experience.technologies && (
+										<div className={styles.technologies}>
+											{experience.technologies.map((tech, techIndex) => (
+												<span key={techIndex} className={styles.techBadge}>
+													{tech}
+												</span>
+											))}
+										</div>
+									)}
+
+									{/* Card Footer */}
+									<div className={styles.cardFooter}>
+										<div className={styles.cardNumber}>
+											{String(index + 1).padStart(2, '0')}
+										</div>
+										<div className={styles.experienceIcon}>
+											{experience.icon}
+										</div>
+									</div>
 								</div>
-							)
-						})}
-					</div>
+							</div>
+						)
+					})}
 				</div>
 
-				{/* Progress Indicator */}
-				<div className={styles.progressIndicator}>
-					<div
-						className={styles.progressBar}
-						style={{ width: `${scrollProgress}%` }}
-					></div>
+				{/* Navigation Controls */}
+				<div className={styles.navigationControls}>
+					<button
+						className={styles.navButton}
+						onClick={prevCard}
+						disabled={activeCard === 0}
+						aria-label='Oldingi ish'
+					>
+						<ChevronLeft />
+					</button>
+
+					<div className={styles.cardIndicator}>
+						{experiences.map((_, index) => (
+							<div
+								key={index}
+								className={`${styles.indicatorDot} ${
+									index === activeCard ? 'active' : ''
+								}`}
+								onClick={() => goToCard(index)}
+								title={`Ish ${index + 1}`}
+							/>
+						))}
+					</div>
+
+					<button
+						className={styles.navButton}
+						onClick={nextCard}
+						disabled={activeCard === experiences.length - 1}
+						aria-label='Keyingi ish'
+					>
+						<ChevronRight />
+					</button>
 				</div>
 
 				{/* Summary Stats */}
@@ -219,7 +189,7 @@ const Experience = () => {
 						<div className={styles.statLabel}>Ish Joylari</div>
 					</div>
 					<div className={styles.statCard}>
-						<div className={styles.statNumber}>10+</div>
+						<div className={styles.statNumber}>15+</div>
 						<div className={styles.statLabel}>Loyihalar</div>
 					</div>
 					<div className={styles.statCard}>

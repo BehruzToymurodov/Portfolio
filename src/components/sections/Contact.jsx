@@ -1,3 +1,4 @@
+// Contact.jsx - Yangilangan
 import {
 	Github,
 	Linkedin,
@@ -8,10 +9,9 @@ import {
 	Send,
 } from 'lucide-react'
 import { useState } from 'react'
-import { useTheme } from '../../hooks/useTheme'
+import styles from './Contact.module.css'
 
 const Contact = () => {
-	const { darkMode } = useTheme()
 	const [formData, setFormData] = useState({
 		name: '',
 		email: '',
@@ -19,6 +19,7 @@ const Contact = () => {
 		message: '',
 	})
 	const [isSubmitting, setIsSubmitting] = useState(false)
+	const [showSuccess, setShowSuccess] = useState(false)
 
 	const handleInputChange = e => {
 		const { name, value } = e.target
@@ -33,9 +34,9 @@ const Contact = () => {
 		setIsSubmitting(true)
 
 		// Simulate form submission
-		await new Promise(resolve => setTimeout(resolve, 1000))
+		await new Promise(resolve => setTimeout(resolve, 2000))
 
-		// Reset form
+		// Reset form and show success
 		setFormData({
 			name: '',
 			email: '',
@@ -43,8 +44,12 @@ const Contact = () => {
 			message: '',
 		})
 		setIsSubmitting(false)
+		setShowSuccess(true)
 
-		alert('Xabar muvaffaqiyatli yuborildi!')
+		// Hide success message after 5 seconds
+		setTimeout(() => {
+			setShowSuccess(false)
+		}, 5000)
 	}
 
 	const contactInfo = [
@@ -73,265 +78,197 @@ const Contact = () => {
 			icon: Github,
 			label: 'GitHub',
 			href: 'https://github.com/behruz',
-			color: 'hover:text-gray-900',
 		},
 		{
 			icon: Linkedin,
 			label: 'LinkedIn',
 			href: 'https://linkedin.com/in/behruz',
-			color: 'hover:text-blue-600',
 		},
 		{
-			icon: MessageCircle, // Telegram o'rniga MessageCircle ishlatamiz
+			icon: MessageCircle,
 			label: 'Telegram',
 			href: 'https://t.me/behruz',
-			color: 'hover:text-blue-500',
 		},
 	]
 
 	return (
-		<section
-			id='contact'
-			className={`section-padding ${darkMode ? 'bg-gray-900' : 'bg-gray-50'}`}
-		>
-			<div className='container'>
-				<div className='max-w-6xl mx-auto'>
-					{/* Section Title */}
-					<div className='text-center mb-16'>
-						<h2
-							className={`text-4xl md:text-5xl font-bold mb-4 ${
-								darkMode ? 'text-white' : 'text-gray-900'
-							}`}
-						>
-							Aloqa
-						</h2>
-						<div className='w-24 h-1 bg-primary-600 mx-auto mb-6'></div>
-						<p
-							className={`text-lg ${
-								darkMode ? 'text-gray-300' : 'text-gray-600'
-							} max-w-2xl mx-auto`}
-						>
-							Loyihangiz bo'yicha gaplashish yoki hamkorlik qilish uchun men
-							bilan bog'laning. Har qanday savol yoki takliflaringizni
-							tinglashga tayyorman.
-						</p>
-					</div>
+		<section id='contact' className={styles.contact}>
+			{/* Background Effects */}
+			<div className={styles.contactBackground}>
+				<div className={styles.backgroundGrid}></div>
+				<div className={styles.glowOrbs}>
+					<div className={`${styles.glowOrb} ${styles.orb1}`}></div>
+					<div className={`${styles.glowOrb} ${styles.orb2}`}></div>
+				</div>
+			</div>
 
-					<div className='grid lg:grid-cols-2 gap-12'>
-						{/* Contact Information */}
-						<div className='space-y-8'>
-							<div>
-								<h3
-									className={`text-2xl font-semibold mb-6 ${
-										darkMode ? 'text-white' : 'text-gray-900'
-									}`}
-								>
-									Keling, Birga Ishlaylik!
-								</h3>
-								<p
-									className={`text-lg mb-8 leading-relaxed ${
-										darkMode ? 'text-gray-300' : 'text-gray-600'
-									}`}
-								>
-									Sizning loyihangizni hayotga tatbiq etish uchun men bilan
-									bog'laning. Zamonaviy texnologiyalar yordamida sizning
-									g'oyalaringizni professional web saytga aylantirishga
-									tayyorman.
-								</p>
-							</div>
+			{/* Floating Elements */}
+			<div className={styles.floatingElements}>
+				<div className={`${styles.floatingShape} ${styles.shape1}`}></div>
+				<div className={`${styles.floatingShape} ${styles.shape2}`}></div>
+				<div className={`${styles.floatingShape} ${styles.shape3}`}></div>
+			</div>
 
-							{/* Contact Details */}
-							<div className='space-y-4'>
-								{contactInfo.map((info, index) => {
-									const IconComponent = info.icon
+			<div className={styles.container}>
+				{/* Section Header */}
+				<div className={styles.sectionHeader}>
+					<h2 className={styles.sectionTitle}>
+						<span className={styles.titleGradient}>Aloqa</span>
+					</h2>
+					<div className={styles.sectionDivider}></div>
+					<p className={styles.sectionDescription}>
+						Loyihangiz bo'yicha gaplashish yoki hamkorlik qilish uchun men bilan
+						bog'laning. Har qanday savol yoki takliflaringizni tinglashga
+						tayyorman.
+					</p>
+				</div>
+
+				<div className={styles.contactGrid}>
+					{/* Contact Information */}
+					<div className={styles.contactInfo}>
+						<div className={styles.infoHeader}>
+							<h3 className={styles.infoTitle}>Keling, Birga Ishlaylik!</h3>
+							<p className={styles.infoDescription}>
+								Sizning loyihangizni hayotga tatbiq etish uchun men bilan
+								bog'laning. Zamonaviy texnologiyalar yordamida sizning
+								g'oyalaringizni professional web saytga aylantirishga tayyorman.
+							</p>
+						</div>
+
+						{/* Contact Details */}
+						<div className={styles.contactDetails}>
+							{contactInfo.map((info, index) => {
+								const IconComponent = info.icon
+								return (
+									<a
+										key={index}
+										href={info.href}
+										className={styles.contactItem}
+									>
+										<div className={styles.contactIcon}>
+											<IconComponent />
+										</div>
+										<div className={styles.contactText}>
+											<div className={styles.contactLabel}>{info.label}</div>
+											<div className={styles.contactValue}>{info.value}</div>
+										</div>
+									</a>
+								)
+							})}
+						</div>
+
+						{/* Social Links */}
+						<div>
+							<h4
+								className={styles.infoTitle}
+								style={{ fontSize: '1.25rem', marginBottom: '1rem' }}
+							>
+								Ijtimoiy Tarmoqlar
+							</h4>
+							<div className={styles.socialLinks}>
+								{socialLinks.map((social, index) => {
+									const IconComponent = social.icon
 									return (
 										<a
 											key={index}
-											href={info.href}
-											className={`flex items-center space-x-4 p-4 rounded-lg transition-all duration-300 ${
-												darkMode
-													? 'hover:bg-gray-800 text-gray-300 hover:text-white'
-													: 'hover:bg-white hover:shadow-sm text-gray-600 hover:text-gray-900'
-											}`}
+											href={social.href}
+											target='_blank'
+											rel='noopener noreferrer'
+											className={styles.socialLink}
+											aria-label={social.label}
 										>
-											<div className='p-3 bg-primary-100 dark:bg-primary-900 rounded-lg'>
-												<IconComponent className='w-5 h-5 text-primary-600 dark:text-primary-400' />
-											</div>
-											<div>
-												<div
-													className={`text-sm font-medium ${
-														darkMode ? 'text-gray-400' : 'text-gray-500'
-													}`}
-												>
-													{info.label}
-												</div>
-												<div className='text-lg font-semibold'>
-													{info.value}
-												</div>
-											</div>
+											<IconComponent />
 										</a>
 									)
 								})}
 							</div>
-
-							{/* Social Links */}
-							<div>
-								<h4
-									className={`text-lg font-semibold mb-4 ${
-										darkMode ? 'text-white' : 'text-gray-900'
-									}`}
-								>
-									Ijtimoiy Tarmoqlar
-								</h4>
-								<div className='flex space-x-4'>
-									{socialLinks.map((social, index) => {
-										const IconComponent = social.icon
-										return (
-											<a
-												key={index}
-												href={social.href}
-												target='_blank'
-												rel='noopener noreferrer'
-												className={`p-3 rounded-lg transition-all duration-300 ${
-													darkMode
-														? 'bg-gray-800 text-gray-400 hover:text-white hover:bg-gray-700'
-														: 'bg-white text-gray-500 hover:text-gray-900 hover:shadow-md'
-												} ${social.color}`}
-												aria-label={social.label}
-											>
-												<IconComponent className='w-5 h-5' />
-											</a>
-										)
-									})}
-								</div>
-							</div>
 						</div>
+					</div>
 
-						{/* Contact Form */}
-						<div className={`card`}>
-							<h3
-								className={`text-xl font-semibold mb-6 ${
-									darkMode ? 'text-white' : 'text-gray-900'
-								}`}
-							>
-								Xabar Yuborish
-							</h3>
+					{/* Contact Form */}
+					<div className={styles.contactForm}>
+						<h3 className={styles.formTitle}>Xabar Yuborish</h3>
 
-							<form onSubmit={handleSubmit} className='space-y-6'>
-								<div className='grid md:grid-cols-2 gap-4'>
-									<div>
-										<label
-											className={`block text-sm font-medium mb-2 ${
-												darkMode ? 'text-gray-300' : 'text-gray-700'
-											}`}
-										>
-											Ismingiz *
-										</label>
-										<input
-											type='text'
-											name='name'
-											value={formData.name}
-											onChange={handleInputChange}
-											required
-											className={`w-full px-4 py-3 border rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent transition-all duration-300 ${
-												darkMode
-													? 'bg-gray-700 border-gray-600 text-white placeholder-gray-400'
-													: 'bg-white border-gray-300 text-gray-900 placeholder-gray-500'
-											}`}
-											placeholder='Ismingizni kiriting'
-										/>
-									</div>
-
-									<div>
-										<label
-											className={`block text-sm font-medium mb-2 ${
-												darkMode ? 'text-gray-300' : 'text-gray-700'
-											}`}
-										>
-											Email *
-										</label>
-										<input
-											type='email'
-											name='email'
-											value={formData.email}
-											onChange={handleInputChange}
-											required
-											className={`w-full px-4 py-3 border rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent transition-all duration-300 ${
-												darkMode
-													? 'bg-gray-700 border-gray-600 text-white placeholder-gray-400'
-													: 'bg-white border-gray-300 text-gray-900 placeholder-gray-500'
-											}`}
-											placeholder='emailingiz@email.com'
-										/>
-									</div>
+						<form onSubmit={handleSubmit}>
+							<div className={styles.formGrid}>
+								<div className={styles.formGroup}>
+									<label className={styles.formLabel}>Ismingiz *</label>
+									<input
+										type='text'
+										name='name'
+										value={formData.name}
+										onChange={handleInputChange}
+										required
+										className={styles.formInput}
+										placeholder='Ismingizni kiriting'
+									/>
 								</div>
 
-								<div>
-									<label
-										className={`block text-sm font-medium mb-2 ${
-											darkMode ? 'text-gray-300' : 'text-gray-700'
-										}`}
-									>
-										Mavzu
-									</label>
+								<div className={styles.formGroup}>
+									<label className={styles.formLabel}>Email *</label>
+									<input
+										type='email'
+										name='email'
+										value={formData.email}
+										onChange={handleInputChange}
+										required
+										className={styles.formInput}
+										placeholder='emailingiz@email.com'
+									/>
+								</div>
+
+								<div className={`${styles.formGroup} ${styles.formGridFull}`}>
+									<label className={styles.formLabel}>Mavzu</label>
 									<input
 										type='text'
 										name='subject'
 										value={formData.subject}
 										onChange={handleInputChange}
-										className={`w-full px-4 py-3 border rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent transition-all duration-300 ${
-											darkMode
-												? 'bg-gray-700 border-gray-600 text-white placeholder-gray-400'
-												: 'bg-white border-gray-300 text-gray-900 placeholder-gray-500'
-										}`}
+										className={styles.formInput}
 										placeholder='Xabar mavzusi'
 									/>
 								</div>
 
-								<div>
-									<label
-										className={`block text-sm font-medium mb-2 ${
-											darkMode ? 'text-gray-300' : 'text-gray-700'
-										}`}
-									>
-										Xabar *
-									</label>
+								<div className={`${styles.formGroup} ${styles.formGridFull}`}>
+									<label className={styles.formLabel}>Xabar *</label>
 									<textarea
 										name='message'
 										value={formData.message}
 										onChange={handleInputChange}
 										required
-										rows={5}
-										className={`w-full px-4 py-3 border rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent transition-all duration-300 resize-none ${
-											darkMode
-												? 'bg-gray-700 border-gray-600 text-white placeholder-gray-400'
-												: 'bg-white border-gray-300 text-gray-900 placeholder-gray-500'
-										}`}
+										className={styles.formTextarea}
 										placeholder='Xabaringizni yozing...'
 									></textarea>
 								</div>
+							</div>
 
-								<button
-									type='submit'
-									disabled={isSubmitting}
-									className={`w-full btn-primary flex items-center justify-center space-x-2 ${
-										isSubmitting ? 'opacity-75 cursor-not-allowed' : ''
-									}`}
-								>
+							<button
+								type='submit'
+								disabled={isSubmitting}
+								className={styles.submitButton}
+							>
+								<div className={styles.buttonContent}>
 									{isSubmitting ? (
 										<>
-											<div className='animate-spin rounded-full h-5 w-5 border-b-2 border-white'></div>
+											<div className={styles.loadingSpinner}></div>
 											<span>Yuborilmoqda...</span>
 										</>
 									) : (
 										<>
-											<Send className='w-5 h-5' />
+											<Send size={18} />
 											<span>Xabar Yuborish</span>
 										</>
 									)}
-								</button>
-							</form>
-						</div>
+								</div>
+							</button>
+
+							{showSuccess && (
+								<div className={styles.successMessage}>
+									✅ Xabaringiz muvaffaqiyatli yuborildi! Tez orada javob
+									beraman.
+								</div>
+							)}
+						</form>
 					</div>
 				</div>
 			</div>

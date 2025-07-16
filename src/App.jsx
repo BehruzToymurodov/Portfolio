@@ -1,3 +1,4 @@
+// App.jsx - Testimonials siz va Blur Effects bilan
 import Footer from './components/common/Footer'
 import Header from './components/common/Header'
 import About from './components/sections/About'
@@ -7,29 +8,27 @@ import Hero from './components/sections/Hero'
 import Projects from './components/sections/Projects'
 import Skills from './components/sections/Skills'
 import { useTheme } from './hooks/useTheme'
+import './styles/components.css'
+import './styles/global.css'
+import './styles/variables.css'
 
 function App() {
 	const { darkMode } = useTheme()
 
 	return (
-		<div
-			className={`min-h-screen transition-colors duration-300 ${
-				darkMode ? 'dark' : ''
-			}`}
-		>
-			<div className='bg-gray-50 dark:bg-gray-900'>
-				<Header />
-				<main>
-					<Hero />
-					<About />
-					<Experience />
-					<Projects />
-					<Skills />
-					{/* <Testimonials /> */}
-					<Contact />
-				</main>
-				<Footer />
-			</div>
+		<div>
+			<Header />
+
+			<main>
+				<Hero />
+				<About />
+				<Skills />
+				<Projects />
+				<Experience />
+				<Contact />
+			</main>
+
+			<Footer />
 		</div>
 	)
 }
