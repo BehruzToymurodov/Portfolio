@@ -68,12 +68,13 @@
 	transform: scale(1.1) rotate(5deg);
 }
 
-.iconEmoji {
-	font-size: var(--text-2xl);
+.iconImage {
+	width: 70%;
+	height: 70%;
+	object-fit: contain;
 	transition: all var(--transition);
 }
-
-.skillCard:hover .iconEmoji {
+.skillCard:hover .iconImage {
 	transform: scale(1.2);
 }
 

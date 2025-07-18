@@ -4,7 +4,7 @@ export const skills = [
 		name: 'HTML',
 		level: 95,
 		category: 'Frontend',
-		icon: 'b',
+		icon: '../assets/html.svg',
 		description: 'Semantic HTML5, accessibility, SEO optimization',
 	},
 	{
@@ -12,7 +12,7 @@ export const skills = [
 		name: 'CSS',
 		level: 90,
 		category: 'Frontend',
-		icon: 'a',
+		icon: '../assets/css.svg',
 		description: 'CSS3, Flexbox, Grid, Animations, Responsive Design',
 	},
 	{
@@ -20,7 +20,7 @@ export const skills = [
 		name: 'JavaScript',
 		level: 85,
 		category: 'Frontend',
-		icon: 'c',
+		icon: '../assets/js.svg',
 		description: 'ES6+, DOM manipulation, Async/Await, APIs',
 	},
 	{
@@ -28,7 +28,7 @@ export const skills = [
 		name: 'React',
 		level: 80,
 		category: 'Framework',
-		icon: 'g',
+		icon: '../assets/react.svg',
 		description: 'Hooks, Context, State Management, Components',
 	},
 	{
@@ -36,7 +36,7 @@ export const skills = [
 		name: 'Tailwind CSS',
 		level: 88,
 		category: 'CSS Framework',
-		icon: 'd',
+		icon: '../assets/tailwind.svg',
 		description: 'Utility-first CSS, Responsive Design, Dark Mode',
 	},
 	{
@@ -44,7 +44,7 @@ export const skills = [
 		name: 'API Integration',
 		level: 75,
 		category: 'Backend',
-		icon: 'm',
+		icon: 'api',
 		description: 'REST APIs, Fetch, Axios, Authentication',
 	},
 	{
@@ -52,7 +52,7 @@ export const skills = [
 		name: 'Git',
 		level: 82,
 		category: 'Tools',
-		icon: 'a',
+		icon: '../assets/git.svg',
 		description: 'Version control, GitHub, Collaboration, Branching',
 	},
 	{
@@ -60,7 +60,7 @@ export const skills = [
 		name: 'Figma',
 		level: 78,
 		category: 'Design',
-		icon: 'q',
+		icon: '../../assets/figma.svg',
 		description: 'UI/UX Design, Prototyping, Design Systems',
 	},
 ]

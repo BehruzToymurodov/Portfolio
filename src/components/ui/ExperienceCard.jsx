@@ -1,9 +1,12 @@
+// ExperienceCard.jsx - Individual Card Component
 import { Briefcase, Calendar, GraduationCap, MapPin, Users } from 'lucide-react'
-import { useTheme } from '../../hooks/useTheme'
+import { forwardRef } from 'react'
+import albisonLogo from '../../assets/albison_dark.png'
+import freelanceLogo from '../../assets/freelance_dark.png'
+import kemaLogo from '../../assets/kema_dark.png'
+import styles from './ExperienceCard.module.css'
 
-const ExperienceCard = ({ experience, index, isLeft }) => {
-	const { darkMode } = useTheme()
-
+const ExperienceCard = forwardRef(({ experience, index }, ref) => {
 	const getTypeIcon = type => {
 		switch (type) {
 			case 'full-time':
@@ -17,132 +20,101 @@ const ExperienceCard = ({ experience, index, isLeft }) => {
 		}
 	}
 
-	const getTypeColor = type => {
+	const getTypeClass = type => {
 		switch (type) {
 			case 'full-time':
-				return 'text-blue-500'
+				return styles.iconWork
 			case 'freelance':
-				return 'text-green-500'
+				return styles.iconFreelance
 			case 'education':
-				return 'text-purple-500'
+				return styles.iconEducation
 			default:
-				return 'text-blue-500'
+				return styles.iconWork
 		}
 	}
 
+	const getCardImage = (type, index) => {
+		const images = {
+			'full-time': kemaLogo,
+			freelance: freelanceLogo,
+			education: albisonLogo,
+		}
+		return images[type] || images['full-time']
+	}
+
 	const TypeIcon = getTypeIcon(experience.type)
+	const typeClass = getTypeClass(experience.type)
+	const cardImage = getCardImage(experience.type, index)
 
 	return (
-		<div
-			className={`relative flex items-center ${
-				isLeft ? 'md:flex-row' : 'md:flex-row-reverse'
-			} flex-col`}
-		>
-			{/* Timeline Node */}
-			<div
-				className={`absolute left-4 md:left-1/2 transform md:-translate-x-1/2 w-8 h-8 rounded-full border-4 ${
-					experience.current
-						? 'bg-primary-600 border-primary-200'
-						: darkMode
-						? 'bg-gray-700 border-gray-600'
-						: 'bg-white border-gray-300'
-				} flex items-center justify-center z-10`}
-			>
-				<TypeIcon
-					className={`w-4 h-4 ${
-						experience.current ? 'text-white' : getTypeColor(experience.type)
-					}`}
-				/>
-			</div>
-
-			{/* Card Content */}
-			<div
-				className={`w-full md:w-5/12 ml-16 md:ml-0 ${
-					isLeft ? 'md:pr-8' : 'md:pl-8'
-				}`}
-			>
-				<div
-					className={`card card-hover animate-slide-up`}
-					style={{ animationDelay: `${index * 150}ms` }}
-				>
-					{/* Header */}
-					<div className='flex flex-col md:flex-row md:items-center md:justify-between mb-4'>
-						<div className='mb-2 md:mb-0'>
-							<h3
-								className={`text-xl font-semibold ${
-									darkMode ? 'text-white' : 'text-gray-900'
-								}`}
-							>
-								{experience.role}
-							</h3>
-							<p
-								className={`text-lg font-medium ${
-									darkMode ? 'text-primary-400' : 'text-primary-600'
-								}`}
-							>
-								{experience.company}
-							</p>
+		<li ref={ref} className={styles.card}>
+			<div className={styles.cardContent}>
+				{/* Text Content */}
+				<div className={styles.textContent}>
+					{/* Header with Icon */}
+					<div className={styles.cardHeader}>
+						<div className={`${styles.typeIcon} ${typeClass}`}>
+							<TypeIcon />
 						</div>
+						<div className={styles.cardInfo}>
+							<h3 className={styles.role}>{experience.role}</h3>
+							<p className={styles.company}>{experience.company}</p>
 
-						<div className='flex flex-col md:items-end space-y-1'>
-							{experience.current && (
-								<span className='px-3 py-1 bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-300 rounded-full text-sm font-medium'>
-									Hozirda
-								</span>
-							)}
-							<div className='flex items-center space-x-4 text-sm'>
-								<span
-									className={`flex items-center space-x-1 ${
-										darkMode ? 'text-gray-400' : 'text-gray-600'
-									}`}
-								>
-									<Calendar className='w-4 h-4' />
+							{/* Meta Info */}
+							<div className={styles.meta}>
+								<div className={styles.metaItem}>
+									<Calendar />
 									<span>{experience.period}</span>
-								</span>
+								</div>
 								{experience.location && (
-									<span
-										className={`flex items-center space-x-1 ${
-											darkMode ? 'text-gray-400' : 'text-gray-600'
-										}`}
-									>
-										<MapPin className='w-4 h-4' />
+									<div className={styles.metaItem}>
+										<MapPin />
 										<span>{experience.location}</span>
-									</span>
+									</div>
+								)}
+								{experience.current && (
+									<div className={styles.currentBadge}>Hozirda</div>
 								)}
 							</div>
 						</div>
 					</div>
 
 					{/* Description */}
-					<p
-						className={`mb-4 leading-relaxed ${
-							darkMode ? 'text-gray-300' : 'text-gray-600'
-						}`}
-					>
-						{experience.description}
-					</p>
+					<p className={styles.description}>{experience.description}</p>
 
 					{/* Technologies */}
 					{experience.technologies && (
-						<div className='flex flex-wrap gap-2'>
+						<div className={styles.technologies}>
 							{experience.technologies.map((tech, techIndex) => (
-								<span
-									key={techIndex}
-									className={`px-3 py-1 rounded-full text-xs font-medium ${
-										darkMode
-											? 'bg-gray-700 text-gray-300'
-											: 'bg-gray-100 text-gray-700'
-									}`}
-								>
+								<span key={techIndex} className={styles.techBadge}>
 									{tech}
 								</span>
 							))}
 						</div>
 					)}
+
+					{/* Card Footer */}
+					<div className={styles.cardFooter}>
+						<span className={styles.cardNumber}>
+							{String(index + 1).padStart(2, '0')}
+						</span>
+						<span className={styles.experienceIcon}>{experience.icon}</span>
+					</div>
 				</div>
+
+				{/* Image */}
+				<figure className={styles.imageContainer}>
+					<img
+						src={cardImage}
+						alt={`${experience.role} da ${experience.company}`}
+						className={styles.cardImage}
+					/>
+				</figure>
 			</div>
-		</div>
+		</li>
 	)
-}
+})
+
+ExperienceCard.displayName = 'ExperienceCard'
 
 export default ExperienceCard

@@ -45,7 +45,7 @@ const SkillCard = ({ skill, index, isVisible }) => {
 			{/* Skill Header */}
 			<div className={styles.skillHeader}>
 				<div className={styles.skillIcon}>
-					<span className={styles.iconEmoji}>{skill.icon}</span>
+					<img src={skill.icon} alt={skill.name} className={styles.iconImage} />
 				</div>
 				<div className={styles.skillInfo}>
 					<h3 className={styles.skillName}>{skill.name}</h3>
